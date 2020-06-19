@@ -49,4 +49,7 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
+  'menu.project-list': '项目列表',
+  'menu.project-create': '创建项目',
+  'menu.project-edit': '编辑项目',
 };

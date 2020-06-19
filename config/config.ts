@@ -79,6 +79,24 @@ export default defineConfig({
               component: './ListTableList',
             },
             {
+              name: 'project-list',
+              icon: 'table',
+              path: '/project',
+              component: './ProjectList',
+            },
+            {
+              name: 'project-create',
+              path: '/project/create',
+              component: './ProjectList/CreateProjectForm',
+              hideInMenu: true,
+            },
+            {
+              name: 'project-edit',
+              path: '/project/edit/:id',
+              component: './ProjectList/UpdateProjectForm',
+              hideInMenu: true,
+            },
+            {
               component: './404',
             },
           ],

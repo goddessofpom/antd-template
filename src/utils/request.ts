@@ -3,7 +3,9 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
+import cookie from 'react-cookies';
+import { history } from 'umi';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -51,6 +53,33 @@ const errorHandler = (error: { response: Response }): Response => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
+});
+
+request.interceptors.request.use((url, options) => {
+  const token = localStorage.getItem('jwt_token');
+  const csrf = cookie.load('csrftoken');
+  return {
+    url,
+    options: {
+      ...options,
+      interceptors: true,
+      headers: { Authorization: `JWT ${token}`, 'X-CSRFToken': csrf, Shop: '-1' },
+    },
+  };
+});
+
+request.interceptors.response.use(async (response) => {
+  if (response.status === 401) {
+    history.push({ pathname: '/user/login', query: { redirect: window.location.href } });
+    return message.error('未登录或登录已过期, 请重新登录。');
+  }
+  const data = await response.clone().json();
+  if (data.errcode) {
+    message.error(data.msg);
+    return null;
+  }
+
+  return response;
 });
 
 export default request;
