@@ -39,3 +39,9 @@ export async function apiEditProject(data: PatchFormData, id: string) {
     data,
   });
 }
+
+export async function apiDeleteProject(id: string) {
+  return request(`/api/v1/project/${id}`, {
+    method: 'DELETE',
+  });
+}
