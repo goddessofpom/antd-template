@@ -18,6 +18,10 @@ interface JsonData {
   properties: Array<JsonDataProperties>;
 }
 
+interface ResultDetail {
+  data: any;
+}
+
 const getStandardTableData = (api: string) => {
   const getTableData = (
     { current, pageSize }: PaginatedParams[0],
@@ -111,7 +115,7 @@ const getTableColumns = (
   return columns;
 };
 
-const mergeDetailToForm = (res: any): any => {
+const mergeDetailToForm = (res: ResultDetail): Function => {
   const obj = res.data;
   const fn = (setFieldState: Function) => {
     Object.keys(obj).forEach((key) => {
