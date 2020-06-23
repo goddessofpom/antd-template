@@ -4,6 +4,7 @@ import { Link } from 'umi';
 import { PaginatedParams } from '@umijs/hooks/lib/useFormTable';
 import request from '@/utils/request';
 import moment from 'moment';
+import { FormStateProps } from './uformtools';
 
 interface Result {}
 
@@ -110,4 +111,17 @@ const getTableColumns = (
   return columns;
 };
 
-export { getStandardTableData, getTableColumns };
+const mergeDetailToForm = (res: any): any => {
+  const obj = res.data;
+  const fn = (setFieldState: Function) => {
+    Object.keys(obj).forEach((key) => {
+      setFieldState(key, (state: FormStateProps) => {
+        const newState = state;
+        newState.value = obj[key];
+      });
+    });
+  };
+  return fn;
+};
+
+export { getStandardTableData, getTableColumns, mergeDetailToForm };

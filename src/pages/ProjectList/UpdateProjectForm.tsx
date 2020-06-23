@@ -8,6 +8,7 @@ import project from '@/assets/formjson/project.json';
 import { message, Card } from 'antd';
 import '@alifd/next/dist/next.css';
 import { FormEffectsParams, FormStateProps } from '@/utils/uformtools';
+import { mergeDetailToForm } from '@/utils/tools';
 import { ContentTypeItem } from './data';
 import { apiGetRelateModelsList, apiGetProjectDetail, apiEditProject } from './service';
 
@@ -35,14 +36,7 @@ const UpdateProjectForm = () => {
       });
 
       apiGetProjectDetail(params.id).then((res) => {
-        const obj = res.data;
-        Object.keys(obj).forEach((key) => {
-          setFieldState(key, (state: FormStateProps) => {
-            // Object.defineProperty(state, "value", {value: obj[key]})
-            const newState = state;
-            newState.value = obj[key];
-          });
-        });
+        mergeDetailToForm(res)(setFieldState);
       });
     });
   };
