@@ -34,15 +34,15 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(apiUserLogin, payload);
-      const { data } = response;
-      localStorage.setItem('jwt_token', data.token);
-      reloadAuthorized();
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
       // Login successfully
       if (response) {
+        const { data } = response;
+        localStorage.setItem('jwt_token', data.token);
+        reloadAuthorized();
+        yield put({
+          type: 'changeLoginStatus',
+          payload: response,
+        });
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };

@@ -22,6 +22,11 @@ interface ResultDetail {
   data: any;
 }
 
+interface NewColumnData {
+  key: string;
+  data: {};
+}
+
 const getStandardTableData = (api: string) => {
   const getTableData = (
     { current, pageSize }: PaginatedParams[0],
@@ -128,4 +133,13 @@ const mergeDetailToForm = (res: ResultDetail): Function => {
   return fn;
 };
 
-export { getStandardTableData, getTableColumns, mergeDetailToForm };
+const replaceColumns = (oriData: Array<any>, newData: Array<NewColumnData>) => {
+  const result = oriData.map((item) => {
+    const newItem = newData.find((data) => data.key === item.key);
+    return newItem?.data || item;
+  });
+
+  return result;
+};
+
+export { getStandardTableData, getTableColumns, mergeDetailToForm, replaceColumns };
