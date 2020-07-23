@@ -21,8 +21,7 @@
     "relate_models": {
       "type": "checkbox",
       "enum": [],
-      "title": "关联model",
-      "required": true
+      "title": "关联model"
     },
     "with_mark": {
       "type": "string",
@@ -37,6 +36,10 @@
       "required": true,
       "type": "string",
       "x-component": "CustomComponent"
+    },
+    "cascade": {
+      "title": "连级选择",
+      "type": "cascade"
     }
   }
 }

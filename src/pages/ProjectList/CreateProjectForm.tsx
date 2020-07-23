@@ -6,12 +6,13 @@ import { Button } from '@alifd/next';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import project from '@/assets/formjson/project.json';
 import '@alifd/next/dist/next.css';
-import { message, Card } from 'antd';
+import { message, Card, Cascader } from 'antd';
 import { FormEffectsParams, FormStateProps } from '@/utils/uformtools';
 import useSchema from '@/hooks/useSchema';
 import { createRichTextUtils } from '@/components/ExtraFormilyItem';
 import useBraftEditor from '@/hooks/useBraftEditor';
 import BraftEditor from 'braft-editor';
+import region from '@/assets/region';
 import { ContentTypeItem } from './data';
 import { apiGetRelateModelsList, apiSubmitPrjectForm } from './service';
 import 'braft-editor/dist/index.css';
@@ -31,6 +32,12 @@ const CreateProjectForm = () => {
           }}
         />
       </div>
+    );
+  };
+
+  const Cascade = (props: any) => {
+    return (
+      <Cascader options={region} value={props.value} onChange={(val) => props.onChange(val)} />
     );
   };
 
@@ -54,7 +61,7 @@ const CreateProjectForm = () => {
   const createProject = (val: any) => {
     const newVal = {
       ...val,
-      richText: contentToHtml(),
+      rich_text: contentToHtml(),
     };
     run(newVal);
   };
@@ -80,7 +87,7 @@ const CreateProjectForm = () => {
         <SchemaForm
           onSubmit={createProject}
           schema={schema}
-          components={{ CustomComponent }}
+          components={{ CustomComponent, Cascade }}
           labelCol={7}
           wrapperCol={12}
           expressionScope={createRichTextUtils()}
