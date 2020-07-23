@@ -8,20 +8,61 @@ import project from '@/assets/formjson/project.json';
 import '@alifd/next/dist/next.css';
 import { message, Card } from 'antd';
 import { FormEffectsParams, FormStateProps } from '@/utils/uformtools';
+import useSchema from '@/hooks/useSchema';
+import { createRichTextUtils } from '@/components/ExtraFormilyItem';
+import useBraftEditor from '@/hooks/useBraftEditor';
+import BraftEditor from 'braft-editor';
 import { ContentTypeItem } from './data';
 import { apiGetRelateModelsList, apiSubmitPrjectForm } from './service';
+import 'braft-editor/dist/index.css';
 
 const CreateProjectForm = () => {
+  const { schema, setProperties } = useSchema(project);
+  const { content, setContent, contentToHtml } = useBraftEditor();
+
+  const CustomComponent = (props: any) => {
+    return (
+      <div style={{ border: '1px solid #ccc' }}>
+        <BraftEditor
+          value={content}
+          onChange={(val) => {
+            setContent(val);
+            props.onChange(val);
+          }}
+        />
+      </div>
+    );
+  };
+
+  const newField = {
+    name: 'test',
+    data: {
+      type: 'string',
+      title: '测试',
+      required: true,
+    },
+  };
+
+  setProperties(newField);
+
   const submit = useRequest(apiSubmitPrjectForm, {
     manual: true,
     onSuccess: () => message.success('添加成功'),
   });
   const { run } = submit;
 
+  const createProject = (val: any) => {
+    const newVal = {
+      ...val,
+      richText: contentToHtml(),
+    };
+    run(newVal);
+  };
+
   const formEffects = ($: any, { setFieldState }: FormEffectsParams) => {
     $('onFormMount').subscribe(() => {
       apiGetRelateModelsList().then((res) => {
-        const relateModelsEnum = res.data.map((item: ContentTypeItem) => ({
+        const relateModelsEnum = res?.data.map((item: ContentTypeItem) => ({
           label: `${item.app_label}_${item.model}`,
           value: item.id,
         }));
@@ -37,10 +78,12 @@ const CreateProjectForm = () => {
     <PageHeaderWrapper content="请填写项目详情">
       <Card bordered={false}>
         <SchemaForm
-          onSubmit={(val) => run(val)}
-          schema={project}
+          onSubmit={createProject}
+          schema={schema}
+          components={{ CustomComponent }}
           labelCol={7}
           wrapperCol={12}
+          expressionScope={createRichTextUtils()}
           initialValues={{ status: 0 }}
           effects={formEffects}
         >

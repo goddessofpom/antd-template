@@ -23,6 +23,20 @@
       "enum": [],
       "title": "关联model",
       "required": true
+    },
+    "with_mark": {
+      "type": "string",
+      "title": "加标签输入框",
+      "required": true,
+      "x-props": {
+        "addonAfter": "{{ help('排序越大越靠前，最小为0',10) }}"
+      }
+    },
+    "rich_text": {
+      "title": "富文本",
+      "required": true,
+      "type": "string",
+      "x-component": "CustomComponent"
     }
   }
 }

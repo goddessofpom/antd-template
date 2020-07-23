@@ -68,7 +68,12 @@
     "@uform/next": "^1.0.5",
     "@umijs/hooks": "^1.9.3",
     "antd": "^4.3.4",
+    "braft-editor": "^2.3.9",
+    "brickd": "^1.0.0-alpha.10",
+    "brickd-core": "^1.0.0-alpha.10",
+    "bricks-web": "^1.0.0-alpha.10",
     "classnames": "^2.2.6",
+    "immer": "^7.0.5",
     "lodash": "^4.17.11",
     "moment": "^2.18.1",
     "omit.js": "^1.0.2",
@@ -81,6 +86,7 @@
     "uform": "^0.1.9",
     "umi": "3.1.1",
     "umi-request": "^1.0.8",
+    "use-immer": "^0.4.0",
     "use-merge-value": "^1.0.1"
   },
   "devDependencies": {
